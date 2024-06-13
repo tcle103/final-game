@@ -51,7 +51,11 @@ class Main extends Phaser.Scene {
         let my = this.my;    // create an alias to this.my for readability
 
         if ((this.dKey.isDown || this.rightKey.isDown)) {
-            
+            my.sprite.ground.x -= 1.5;
+            my.sprite.bg2.x -= 1.3;
+            my.sprite.bg1.x -= 1;
+            my.sprite.sky.x -= 0.4;
+            my.sprite.fground -= 3;
         }
 
     }
