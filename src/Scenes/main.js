@@ -119,8 +119,16 @@ class Main extends Phaser.Scene {
         my.sprite.textbox = this.add.sprite(400, 325, "textbox");
         my.sprite.textbox.setScale(10);
 
-        this.txt = this.add.bitmapText(300, 300, "pixel", "hi");
-        this.txt.setCharacterTint(0, -1, false, 0x000000);
+        this.txt = this.add.bitmapText(200, 100, "pixel", "hi");
+        this.txt.setTint(0x000000, 0x000000, 0x000000, 0x000000);
+
+        this.anims.create({key: "drive", 
+                            frames: [
+                                {key: "car"},
+                                {key: "car1"},
+                            ],
+                            frameRate: 2,
+                            repeat: -1 });
 
         this.input.keyboard.addCapture('SPACE,FORWARD_SLASH');
 
@@ -337,6 +345,8 @@ class Main extends Phaser.Scene {
     update() {
         let my = this.my;    // create an alias to this.my for readability
 
+        console.log(my.sprite.car.anims.getFrameName());
+
         my.sprite.ground.x -= this.speed;
         my.sprite.bg2.x -= 2 * this.speed / 3
         my.sprite.bg1.x -= this.speed / 3;
@@ -351,6 +361,7 @@ class Main extends Phaser.Scene {
         }
         if (this.go == true && this.counter >= 30) {
             this.go = false;
+            my.sprite.car.anims.pause(this.anims.get("drive").frames[0]);
         }
 
     }
@@ -364,6 +375,7 @@ class Main extends Phaser.Scene {
             if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
                 ++this.correctCount;
                 this.go = true;
+                my.sprite.car.play("drive", true);
                 if (this.speed < 1.5) {
                     this.speed += 0.5;
                 }
