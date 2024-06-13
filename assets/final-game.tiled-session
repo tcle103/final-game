@@ -11,6 +11,9 @@
         "": {
             "scaleInDock": 1
         },
+        "#pixel_ui": {
+            "scaleInEditor": 1
+        },
         "backgorunds.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -20,11 +23,11 @@
             "scaleInEditor": 1.5
         },
         "map.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 384.99999999999994,
-                "y": 93.66666666666669
+                "x": 123.16666666666669,
+                "y": 42.16666666666667
             }
         },
         "map.tmx#background": {
@@ -34,12 +37,12 @@
             "scaleInDock": 1
         }
     },
-    "last.imagePath": "C:/Users/Tien Le/Documents/CSE120/final-game/assets/kenney_platformer-art-pixel-redux/Tilemap",
-    "map.height": 3,
+    "last.imagePath": "C:/Users/Tien Le/Documents/CSE120/final-game/assets/kenney_pixel-ui-pack/Spritesheet",
+    "map.height": 4,
     "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 21,
-    "map.tileWidth": 21,
-    "map.width": 36,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 5,
     "openFiles": [
         "map.tmx"
     ],
@@ -51,8 +54,10 @@
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 2,
     "tileset.tileSize": {
-        "height": 21,
-        "width": 21
+        "height": 16,
+        "width": 16
     }
 }
