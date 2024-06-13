@@ -91,6 +91,8 @@ class Main extends Phaser.Scene {
 
         this.load.image("textbox", "textbox.png");
 
+        this.load.bitmapFont("pixel", "font_0.png", "font.fnt");
+
     }
 
     create() {
@@ -116,6 +118,9 @@ class Main extends Phaser.Scene {
 
         my.sprite.textbox = this.add.sprite(400, 325, "textbox");
         my.sprite.textbox.setScale(10);
+
+        this.txt = this.add.bitmapText(300, 300, "pixel", "hi");
+        this.txt.setCharacterTint(0, -1, false, 0x000000);
 
         this.input.keyboard.addCapture('SPACE,FORWARD_SLASH');
 
