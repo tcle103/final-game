@@ -25,14 +25,21 @@ class Main extends Phaser.Scene {
         this.userEntry = [];
 
         this.counter = 0;
+        this.counter1 = 0;
+        this.flip = false;
 
         this.speed = 0;
 
-        this.indexCount = -1;
+        this.indexCount = 0;
 
         this.correctCount = 0;
 
         this.go = false;
+
+        this.correctColor = 0x373130;
+        this.defaultColor = 0xffffff;
+        this.cursorColor = 0x9a8a87;
+        this.wrongColor = 0xfa6ea2;
     }
 
     // Use preload to load art and sound assets before the scene starts running.
@@ -87,7 +94,7 @@ class Main extends Phaser.Scene {
         this.txt.maxWidth = 480;
         this.txtmask = this.txt.createBitmapMask(my.sprite.mask);
         this.txt.setMask(this.txtmask);
-        this.txt.setTint(0x000000, 0x000000, 0x000000, 0x000000);
+        this.txt.setTint(this.defaultColor);
 
         this.anims.create({key: "drive", 
                             frames: [
@@ -101,204 +108,164 @@ class Main extends Phaser.Scene {
 
         this.input.keyboard.on("keydown-A", (e) => {
             this.userEntry.push("a"); 
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-B", (e) => {
             this.userEntry.push("b");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-C", (e) => {
             this.userEntry.push("c");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-D", (e) => {
             this.userEntry.push("d");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-E", (e) => {
             this.userEntry.push("e");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-F", (e) => {
             this.userEntry.push("f");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-G", (e) => {
             this.userEntry.push("g");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-H", (e) => {
             this.userEntry.push("h");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-I", (e) => {
             this.userEntry.push("i");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-J", (e) => {
             this.userEntry.push("j");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-K", (e) => {
             this.userEntry.push("k");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-L", (e) => {
             this.userEntry.push("l");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-M", (e) => {
             this.userEntry.push("m");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-N", (e) => {
             this.userEntry.push("n");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-O", (e) => {
             this.userEntry.push("o");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-P", (e) => {
             this.userEntry.push("p");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-Q", (e) => {
             this.userEntry.push("q");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-R", (e) => {
             this.userEntry.push("r");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-S", (e) => {
             this.userEntry.push("s");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-T", (e) => {
             this.userEntry.push("t");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-U", (e) => {
             this.userEntry.push("u");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-V", (e) => {
             this.userEntry.push("v");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-W", (e) => {
             this.userEntry.push("w");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-X", (e) => {
             this.userEntry.push("x");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-Y", (e) => {
             this.userEntry.push("y");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-Z", (e) => {
             this.userEntry.push("z");
-            ++this.indexCount;
             this.movement();
         });
 
         this.input.keyboard.on("keydown-ONE", (e) => {
             this.userEntry.push("1");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-TWO", (e) => {
             this.userEntry.push("2");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-THREE", (e) => {
             this.userEntry.push("3");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-FOUR", (e) => {
             this.userEntry.push("4");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-FIVE", (e) => {
             this.userEntry.push("5");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-SIX", (e) => {
             this.userEntry.push("6");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-SEVEN", (e) => {
             this.userEntry.push("7");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-EIGHT", (e) => {
             this.userEntry.push("8");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-NINE", (e) => {
             this.userEntry.push("9");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-ZERO", (e) => {
             this.userEntry.push("0");
-            ++this.indexCount;
             this.movement();
         });
 
         this.input.keyboard.on("keydown-FORWARD_SLASH", (e) => {
             this.userEntry.push("/");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-PERIOD", (e) => {
             this.userEntry.push(".");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-SPACE", (e) => {
             this.userEntry.push(" ");
-            ++this.indexCount;
             this.movement();
         });
         this.input.keyboard.on("keydown-ENTER", (e) => {
             this.userEntry.push("\n");
-            ++this.indexCount;
             this.movement();
         })
         this.input.keyboard.on("keydown-BACKSPACE", (e) => {
@@ -321,6 +288,7 @@ class Main extends Phaser.Scene {
         my.sprite.fground -= 2 * this.speed;
 
         ++this.counter;
+        ++this.counter1;
 
         if (this.go == false && this.speed > 0 && this.counter >= 10) {
             this.speed -= 0.5;
@@ -329,6 +297,18 @@ class Main extends Phaser.Scene {
         if (this.go == true && this.counter >= 30) {
             this.go = false;
             my.sprite.car.anims.pause(this.anims.get("drive").frames[0]);
+        }
+
+        if (this.counter1 >= 10) {
+            if (this.flip) {
+                this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor);
+                this.flip = false;
+            }
+            else {
+                this.txt.setCharacterTint(this.indexCount, 1, true, this.cursorColor);
+                this.flip = true;
+            }
+            this.counter1 = 0;
         }
 
     }
@@ -346,6 +326,7 @@ class Main extends Phaser.Scene {
                 if (this.speed < 1.5) {
                     this.speed += 0.5;
                 }
+                ++this.indexCount;
             }
         }
         else {
