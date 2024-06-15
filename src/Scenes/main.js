@@ -351,7 +351,8 @@ class Main extends Phaser.Scene {
     update() {
         let my = this.my;    // create an alias to this.my for readability
 
-        if (my.sprite.ground.x < 1220) {
+        if (my.sprite.ground.x > 37) {
+            console.log(my.sprite.ground.x)
             my.sprite.ground.x -= this.speed;
             my.sprite.bg2.x -= 2 * this.speed / 3
             my.sprite.bg1.x -= this.speed / 3;
