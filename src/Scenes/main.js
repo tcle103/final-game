@@ -1,47 +1,5 @@
-function makeArr() {
-    let originalTxt = `6/10/24\n
-        \n
-        i took a drive in the forest today\n
-        to take my mind off my finals\n
-        \n
-        i'm pretty tired. sometimes it feels like\n
-        i've just been born tired\n
-        \n
-        ...\n
-        i like driving.\n
-        i like how\n
-        the way 'forward'\n
-        is always just\n
-        the road that's right in front of me\n
-        \n
-        i had a thought\n
-        that if i just kept driving\n
-        everything will just shrink away in the distance\n
-        \n
-        ...\n
-        i had another thought\n
-        that here is a pretty special place to be\n
-        that not just everywhere\n
-        there is so much green\n
-        and so much love\n
-        for every inch of it\n
-        
-        ...\n
-        i saw a frog today\n
-        it was really cute\n
-        i normally hear them\n
-        but i don't think i've seen one before\n
-        
-        he was just hopping around\n
-        maybe he was enjoying the sun\n
-        the joy of feeling warmth.\n
-        
-        ...\n
-        i thought then that\n
-        it was time i go back to my dorm\n
-        next time\n
-        i'll take a walk in the sunshine instead
-        `;
+function makeArr(originalTxt) {
+    
 
     let arr = [];
 
@@ -58,7 +16,9 @@ class Main extends Phaser.Scene {
         super("mainScene");
         this.my = { sprite: {} };  // Create an object to hold sprite bindings
 
-        this.originalTxtArr = makeArr();
+        this.originalTxt = `6/10/24\n\ni took a drive in the forest today\nto take my mind off my finals\n\ni'm pretty tired. sometimes it feels like\ni've just been born tired\n\n...\ni like driving.\ni like how\nthe way 'forward'\nis always just\nthe road that's right in front of me\n\ni had a thought\nthat if i just kept driving\neverything will just shrink away in the distance\n\n...\ni had another thought\nthat here is a pretty special place to be\nthat not just everywhere\nthere is so much green\nand so much love\nfor every inch of it\n\n...\ni saw a frog today\nit was really cute\ni normally hear them\nbut i don't think i've seen one before\n\nhe was just hopping around\nmaybe he was enjoying the sun\nthe joy of feeling warmth.\n\n...\ni thought then that\nit was time i go back to my dorm\nnext time\ni'll take a walk in the sunshine instead`;
+
+        this.originalTxtArr = makeArr(this.originalTxt);
 
         console.log(this.originalTxtArr);
 
@@ -119,7 +79,7 @@ class Main extends Phaser.Scene {
         my.sprite.textbox = this.add.sprite(400, 325, "textbox");
         my.sprite.textbox.setScale(10);
 
-        this.txt = this.add.bitmapText(200, 100, "pixel", "hi");
+        this.txt = this.add.bitmapText(180, 60, "pixel", this.originalTxt);
         this.txt.setTint(0x000000, 0x000000, 0x000000, 0x000000);
 
         this.anims.create({key: "drive", 
