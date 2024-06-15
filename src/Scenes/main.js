@@ -25,7 +25,7 @@ class Main extends Phaser.Scene {
         super("mainScene");
         this.my = { sprite: {} };  // Create an object to hold sprite bindings
 
-        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is a pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i don't think i've seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\ni'll take a walk in the sunshine instead`;
+        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is>\na pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i dont think>\nive seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\ni'll take a walk in the sunshine instead`;
 
         this.originalTxtArr = makeArr(this.originalTxt);
 
@@ -40,7 +40,7 @@ class Main extends Phaser.Scene {
         this.speed = 0;
 
         this.indexCount = 0;
-        this.charLineCount = 0;
+        this.baseIndex = 0;
         this.enterCount = 0;
         this.errors = [];
 
@@ -323,8 +323,8 @@ class Main extends Phaser.Scene {
             ++this.indexCount;
         })
         this.input.keyboard.on("keydown-BACKSPACE", (e) => {
-            if (this.userEntry[this.indexCount-1] == ">") {
-                this.txt.y += 32;
+            if (this.indexCount-1 <= this.baseIndex) {
+                return;
             }
             this.userEntry.pop();
             console.log(this.userEntry);
@@ -385,21 +385,17 @@ class Main extends Phaser.Scene {
     movement() {
         let my = this.my;
 
-
-        if (this.userEntry.length != 0) {
+        if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
             if (this.userEntry[this.indexCount] == ">") {
                 if (this.errors.length == 0) {
                     this.txt.y -= 32;
-                    this.charLineCount = 0;
+                    this.baseIndex = this.indexCount;
                 }
                 else {
                     this.userEntry.pop();
                     --this.indexCount;
                 }
             }
-        }
-
-        if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
             if (this.userEntry[this.indexCount] == ">") {
                 ++this.enterCount;
             }
@@ -412,6 +408,11 @@ class Main extends Phaser.Scene {
             }
         }
         if (this.userEntry[this.indexCount] != this.originalTxtArr[this.indexCount]) {
+            if (this.originalTxtArr[this.indexCount] == ">") {
+                --this.indexCount;
+                this.userEntry.pop();
+                return;
+            }
             if (this.originalTxtArr[this.indexCount] == " ") {
                 console.log(this.indexCount);
                 this.originalTxt = setCharAt(this.originalTxt, this.indexCount+this.enterCount, "x", this.txt);
