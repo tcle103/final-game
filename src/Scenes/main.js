@@ -23,9 +23,12 @@ function makeArr(originalTxt) {
 class Main extends Phaser.Scene {
     constructor() {
         super("mainScene");
+    }
+
+    init() {
         this.my = { sprite: {} };  // Create an object to hold sprite bindings
 
-        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is>\na pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i dont think>\nive seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\nill take a walk in the sunshine>\ninstead`;
+        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is>\na pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i dont think>\nive seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\nill take a walk in the sunshine>\ninstead>\n>\nthe end.>`;
 
         this.originalTxtArr = makeArr(this.originalTxt);
 
@@ -59,7 +62,6 @@ class Main extends Phaser.Scene {
 
     // Use preload to load art and sound assets before the scene starts running.
     preload() {
-        // Assets from Kenny Assets pack "Shape Characters"
         this.load.setPath("./assets/");
 
         this.load.image("sky", "sky.png");
@@ -78,6 +80,9 @@ class Main extends Phaser.Scene {
 
         this.load.image('frog1', "frog1.png");
         this.load.image('frog2', "frog2.png");
+
+        this.load.image("restart", "restart.png");
+        this.load.image("restartHover", "restartHover.png");
     }
 
     create() {
@@ -109,6 +114,13 @@ class Main extends Phaser.Scene {
 
         my.sprite.frog = this.add.sprite(2800, 380, "frog1");
         my.sprite.frog.setScale(4);
+
+        my.sprite.reloadHover = this.add.sprite(750, 560, "restartHover");
+        my.sprite.reload = this.add.sprite(750, 560, "restart");
+        my.sprite.reload.setScale(5);
+        my.sprite.reloadHover.setScale(5);
+        my.sprite.reloadHover.visible = false;
+        
 
         this.txt = this.add.bitmapText(180, 60, "pixel", this.originalTxt);
         this.txt.maxWidth = 480;
@@ -365,6 +377,14 @@ class Main extends Phaser.Scene {
             }
         });
 
+        my.sprite.reload.setInteractive();
+        my.sprite.reload.on('pointerover', () => { my.sprite.reloadHover.visible = true; });
+        my.sprite.reload.on('pointerout', () => { my.sprite.reloadHover.visible = false; });
+        my.sprite.reload.on('pointerdown', () => 
+            {
+                this.scene.restart();
+            })
+
     }
 
     update() {
@@ -463,7 +483,7 @@ class Main extends Phaser.Scene {
         // console.log(this.errors);
 
         if (this.indexCount >= this.originalTxtArr.length-1) {
-            console.log(my.sprite.ground.x);
+            this.scene.start("titleScene");
         }
 
     }

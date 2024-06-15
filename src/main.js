@@ -21,7 +21,7 @@ let config = {
     },
     width: 800,
     height: 600,
-    scene: [Main],
+    scene: [Title, Main, Credits],
     fps: { forceSetTimeOut: true, target: 30 },
     type: Phaser.WEBGL
 }
