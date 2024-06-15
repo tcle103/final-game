@@ -25,7 +25,7 @@ class Main extends Phaser.Scene {
         super("mainScene");
         this.my = { sprite: {} };  // Create an object to hold sprite bindings
 
-        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is>\na pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i dont think>\nive seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\ni'll take a walk in the sunshine instead`;
+        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is>\na pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i dont think>\nive seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\nill take a walk in the sunshine>\ninstead`;
 
         this.originalTxtArr = makeArr(this.originalTxt);
 
@@ -331,6 +331,7 @@ class Main extends Phaser.Scene {
             this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor);
             --this.indexCount;
             if (this.errors.includes(this.indexCount)) {
+                console.log(this.enterCount);
                 if (this.originalTxtArr[this.indexCount] == " ") {
                     console.log(this.indexCount);
                     this.originalTxt = setCharAt(this.originalTxt, this.indexCount+this.enterCount, " ", this.txt);
@@ -339,7 +340,7 @@ class Main extends Phaser.Scene {
                 this.errors.splice(this.errors.indexOf(this.indexCount), 1);
             }
             for (let i = 0; i < this.errors.length; ++i) {
-                if (this.errors[i] > this.indexCount) {
+                if (this.errors[i] >= this.indexCount) {
                     this.errors.splice(i, 1);
                 }
             }
@@ -350,11 +351,13 @@ class Main extends Phaser.Scene {
     update() {
         let my = this.my;    // create an alias to this.my for readability
 
-        my.sprite.ground.x -= this.speed;
-        my.sprite.bg2.x -= 2 * this.speed / 3
-        my.sprite.bg1.x -= this.speed / 3;
-        my.sprite.sky.x -= this.speed / 6;
-        my.sprite.fground -= 2 * this.speed;
+        if (my.sprite.ground.x < 1220) {
+            my.sprite.ground.x -= this.speed;
+            my.sprite.bg2.x -= 2 * this.speed / 3
+            my.sprite.bg1.x -= this.speed / 3;
+            my.sprite.sky.x -= this.speed / 6;
+            my.sprite.fground -= 2 * this.speed;
+        }
 
         ++this.counter;
         ++this.counter1;
@@ -388,6 +391,7 @@ class Main extends Phaser.Scene {
         if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
             if (this.userEntry[this.indexCount] == ">") {
                 if (this.errors.length == 0) {
+                    ++this.enterCount;
                     this.txt.y -= 32;
                     this.baseIndex = this.indexCount;
                 }
@@ -395,9 +399,6 @@ class Main extends Phaser.Scene {
                     this.userEntry.pop();
                     --this.indexCount;
                 }
-            }
-            if (this.userEntry[this.indexCount] == ">") {
-                ++this.enterCount;
             }
             ++this.correctCount;
             this.go = true;
@@ -424,6 +425,10 @@ class Main extends Phaser.Scene {
 
         console.log(this.userEntry);
         console.log(this.errors);
+
+        if (this.indexCount >= this.originalTxtArr.length-1) {
+            console.log(my.sprite.ground.x);
+        }
 
     }
 
