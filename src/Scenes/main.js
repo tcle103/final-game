@@ -1,3 +1,10 @@
+// from https://stackoverflow.com/a/1431110
+function setCharAt(str,index,chr, text) {
+    if(index > str.length-1) return str;
+    text.setText(str.substring(0,index) + chr + str.substring(index+1));
+    return (str.substring(0,index) + chr + str.substring(index+1));
+}
+
 function makeArr(originalTxt) {
 
 
@@ -18,7 +25,7 @@ class Main extends Phaser.Scene {
         super("mainScene");
         this.my = { sprite: {} };  // Create an object to hold sprite bindings
 
-        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\ni'm pretty tired. sometimes it feels like>\ni've just been born tired>\n>\n...\ni like driving.>\ni like how>\nthe way 'forward'>\nis always just>\nthe road that's right in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away in the distance>\n>\n...>\ni had another thought>\nthat here is a pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i don't think i've seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\ni'll take a walk in the sunshine instead`;
+        this.originalTxt = `6/10/24>\n>\ni took a drive in the forest today>\nto take my mind off my finals>\n>\nim pretty tired.>\nsometimes it feels like>\nive just been born tired>\n>\n...>\ni like driving.>\ni like how>\nthe way forward>\nis always just>\nthe road that is>\nright in front of me>\n>\ni had a thought>\nthat if i just kept driving>\neverything will just shrink away>\nin the distance>\n>\n...>\ni had another thought>\nthat here is a pretty special place to be>\nthat not just everywhere>\nthere is so much green>\nand so much love>\nfor every inch of it>\n>\n...>\ni saw a frog today>\nit was really cute>\ni normally hear them>\nbut i don't think i've seen one before>\n>\nhe was just hopping around>\nmaybe he was enjoying the sun>\nthe joy of feeling warmth.>\n>\n...>\ni thought then that>\nit was time i go back to my dorm>\nnext time>\ni'll take a walk in the sunshine instead`;
 
         this.originalTxtArr = makeArr(this.originalTxt);
 
@@ -34,6 +41,7 @@ class Main extends Phaser.Scene {
 
         this.indexCount = 0;
         this.charLineCount = 0;
+        this.enterCount = 0;
         this.errors = [];
 
         this.correctCount = 0;
@@ -315,11 +323,25 @@ class Main extends Phaser.Scene {
             ++this.indexCount;
         })
         this.input.keyboard.on("keydown-BACKSPACE", (e) => {
+            if (this.userEntry[this.indexCount-1] == ">") {
+                this.txt.y += 32;
+            }
             this.userEntry.pop();
+            console.log(this.userEntry);
             this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor);
             --this.indexCount;
             if (this.errors.includes(this.indexCount)) {
+                if (this.originalTxtArr[this.indexCount] == " ") {
+                    console.log(this.indexCount);
+                    this.originalTxt = setCharAt(this.originalTxt, this.indexCount+this.enterCount, " ", this.txt);
+                    console.log(this.txt.text);
+                }
                 this.errors.splice(this.errors.indexOf(this.indexCount), 1);
+            }
+            for (let i = 0; i < this.errors.length; ++i) {
+                if (this.errors[i] > this.indexCount) {
+                    this.errors.splice(i, 1);
+                }
             }
         });
 
@@ -365,9 +387,10 @@ class Main extends Phaser.Scene {
 
 
         if (this.userEntry.length != 0) {
-            if (this.userEntry[this.indexCount] == ">" || this.charLineCount >= 35) {
+            if (this.userEntry[this.indexCount] == ">") {
                 if (this.errors.length == 0) {
                     this.txt.y -= 32;
+                    this.charLineCount = 0;
                 }
                 else {
                     this.userEntry.pop();
@@ -377,6 +400,9 @@ class Main extends Phaser.Scene {
         }
 
         if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
+            if (this.userEntry[this.indexCount] == ">") {
+                ++this.enterCount;
+            }
             ++this.correctCount;
             this.go = true;
             my.sprite.car.play("drive", true);
@@ -386,6 +412,11 @@ class Main extends Phaser.Scene {
             }
         }
         if (this.userEntry[this.indexCount] != this.originalTxtArr[this.indexCount]) {
+            if (this.originalTxtArr[this.indexCount] == " ") {
+                console.log(this.indexCount);
+                this.originalTxt = setCharAt(this.originalTxt, this.indexCount+this.enterCount, "x", this.txt);
+                console.log(this.txt.text);
+            }
             this.txt.setCharacterTint(this.indexCount, 1, true, this.wrongColor);
             this.errors.push(this.indexCount);
         }
