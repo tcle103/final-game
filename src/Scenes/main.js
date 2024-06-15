@@ -52,6 +52,9 @@ class Main extends Phaser.Scene {
         this.defaultColor = 0xffffff;
         this.cursorColor = 0x9a8a87;
         this.wrongColor = 0xfa6ea2;
+
+        this.jumping = false;
+        this.frogCount = 0;
     }
 
     // Use preload to load art and sound assets before the scene starts running.
@@ -73,6 +76,8 @@ class Main extends Phaser.Scene {
 
         this.load.bitmapFont("pixel", "font_0.png", "font.fnt");
 
+        this.load.image('frog1', "frog1.png");
+        this.load.image('frog2', "frog2.png");
     }
 
     create() {
@@ -102,6 +107,9 @@ class Main extends Phaser.Scene {
         my.sprite.mask.setScale(10);
         my.sprite.mask.visible = false;
 
+        my.sprite.frog = this.add.sprite(2800, 380, "frog1");
+        my.sprite.frog.setScale(4);
+
         this.txt = this.add.bitmapText(180, 60, "pixel", this.originalTxt);
         this.txt.maxWidth = 480;
         this.txtmask = this.txt.createBitmapMask(my.sprite.mask);
@@ -117,6 +125,15 @@ class Main extends Phaser.Scene {
             frameRate: 2,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "leap",
+            frames: [
+                {key: "frog1"},
+                {key: "frog2"},
+            ],
+            frameRate: 12
+        })
 
         this.input.keyboard.addCapture('SPACE,FORWARD_SLASH');
 
@@ -323,19 +340,21 @@ class Main extends Phaser.Scene {
             ++this.indexCount;
         })
         this.input.keyboard.on("keydown-BACKSPACE", (e) => {
-            if (this.indexCount-1 <= this.baseIndex) {
+            if (this.baseIndex != 0 && this.indexCount-1 <= this.baseIndex) {
                 return;
             }
             this.userEntry.pop();
-            console.log(this.userEntry);
+            //console.log(this.userEntry);
             this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor);
-            --this.indexCount;
+            if (this.indexCount > 0) {
+                --this.indexCount;
+            }
             if (this.errors.includes(this.indexCount)) {
                 console.log(this.enterCount);
                 if (this.originalTxtArr[this.indexCount] == " ") {
-                    console.log(this.indexCount);
+                    //console.log(this.indexCount);
                     this.originalTxt = setCharAt(this.originalTxt, this.indexCount+this.enterCount, " ", this.txt);
-                    console.log(this.txt.text);
+                    //console.log(this.txt.text);
                 }
                 this.errors.splice(this.errors.indexOf(this.indexCount), 1);
             }
@@ -352,8 +371,8 @@ class Main extends Phaser.Scene {
         let my = this.my;    // create an alias to this.my for readability
 
         if (my.sprite.ground.x > 37) {
-            console.log(my.sprite.ground.x)
             my.sprite.ground.x -= this.speed;
+            my.sprite.frog.x -= this.speed;
             my.sprite.bg2.x -= 2 * this.speed / 3
             my.sprite.bg1.x -= this.speed / 3;
             my.sprite.sky.x -= this.speed / 6;
@@ -382,6 +401,15 @@ class Main extends Phaser.Scene {
                 this.flip = true;
             }
             this.counter1 = 0;
+        }
+
+        if (this.jumping) {
+            my.sprite.frog.x -= 5;
+            ++this.frogCount;
+            if (this.frogCount >= 10) {
+                this.jumping = false
+                my.sprite.frog.anims.pause(this.anims.get("leap").frames[0]);
+            }
         }
 
     }
@@ -424,8 +452,15 @@ class Main extends Phaser.Scene {
             this.errors.push(this.indexCount);
         }
 
-        console.log(this.userEntry);
-        console.log(this.errors);
+        if (this.userEntry.slice(-1)[0] == "g") {
+            if(this.userEntry.slice(-4)[0] = "f" && this.userEntry.slice(-4)[1] == "r" && this.userEntry.slice(-4)[2] == "o") {
+                this.frogAnim = my.sprite.frog.play("leap");
+                this.jumping = true;
+            }
+        }
+
+        // console.log(this.userEntry);
+        // console.log(this.errors);
 
         if (this.indexCount >= this.originalTxtArr.length-1) {
             console.log(my.sprite.ground.x);
