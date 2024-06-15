@@ -50,6 +50,7 @@ class Main extends Phaser.Scene {
         this.load.image("car1", "rounded_red_edited_2.png");
 
         this.load.image("textbox", "textbox.png");
+        this.load.image("mask", "mask.png");
 
         this.load.bitmapFont("pixel", "font_0.png", "font.fnt");
 
@@ -77,9 +78,15 @@ class Main extends Phaser.Scene {
         my.sprite.car.setScale(10);
 
         my.sprite.textbox = this.add.sprite(400, 325, "textbox");
+        my.sprite.mask = this.add.sprite(400, 325, "mask");
         my.sprite.textbox.setScale(10);
+        my.sprite.mask.setScale(10);
+        my.sprite.mask.visible = false;
 
         this.txt = this.add.bitmapText(180, 60, "pixel", this.originalTxt);
+        this.txt.maxWidth = 480;
+        this.txtmask = this.txt.createBitmapMask(my.sprite.mask);
+        this.txt.setMask(this.txtmask);
         this.txt.setTint(0x000000, 0x000000, 0x000000, 0x000000);
 
         this.anims.create({key: "drive", 
