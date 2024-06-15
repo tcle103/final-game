@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map.tmx",
+    "activeFile": "textbox.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -35,6 +35,17 @@
         },
         "map.tmx#tiles": {
             "scaleInDock": 1
+        },
+        "textbox.tmx": {
+            "scale": 8,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 32.3125,
+                "y": 31.5625
+            }
+        },
+        "textbox.tmx#p": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "C:/Users/Tien Le/Documents/CSE120/final-game/assets/kenney_pixel-ui-pack/Spritesheet",
@@ -44,11 +55,13 @@
     "map.tileWidth": 16,
     "map.width": 5,
     "openFiles": [
-        "map.tmx"
+        "map.tmx",
+        "textbox.tmx"
     ],
     "project": "final-game.tiled-project",
     "recentFiles": [
         "map.tmx",
+        "textbox.tmx",
         "backgorunds.tsx",
         "kenney_platformer-art-pixel-redux.tsx"
     ],

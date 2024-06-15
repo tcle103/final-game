@@ -22,7 +22,8 @@ let config = {
     width: 800,
     height: 600,
     scene: [Main],
-    fps: { forceSetTimeOut: true, target: 30 }
+    fps: { forceSetTimeOut: true, target: 30 },
+    type: Phaser.WEBGL
 }
 
 const game = new Phaser.Game(config);
