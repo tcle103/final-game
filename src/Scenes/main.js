@@ -1,5 +1,5 @@
 function makeArr(originalTxt) {
-    
+
 
     let arr = [];
 
@@ -34,6 +34,7 @@ class Main extends Phaser.Scene {
 
         this.indexCount = 0;
         this.charLineCount = 0;
+        this.errors = [];
 
         this.correctCount = 0;
 
@@ -99,18 +100,20 @@ class Main extends Phaser.Scene {
         this.txt.setMask(this.txtmask);
         this.txt.setTint(this.defaultColor);
 
-        this.anims.create({key: "drive", 
-                            frames: [
-                                {key: "car"},
-                                {key: "car1"},
-                            ],
-                            frameRate: 2,
-                            repeat: -1 });
+        this.anims.create({
+            key: "drive",
+            frames: [
+                { key: "car" },
+                { key: "car1" },
+            ],
+            frameRate: 2,
+            repeat: -1
+        });
 
         this.input.keyboard.addCapture('SPACE,FORWARD_SLASH');
 
         this.input.keyboard.on("keydown-A", (e) => {
-            this.userEntry.push("a"); 
+            this.userEntry.push("a");
             this.movement();
             ++this.indexCount;
         });
@@ -313,17 +316,17 @@ class Main extends Phaser.Scene {
         })
         this.input.keyboard.on("keydown-BACKSPACE", (e) => {
             this.userEntry.pop();
-            this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor); 
+            this.txt.setCharacterTint(this.indexCount, 1, true, this.defaultColor);
             --this.indexCount;
-            this.movement();
+            if (this.errors.includes(this.indexCount)) {
+                this.errors.splice(this.errors.indexOf(this.indexCount), 1);
+            }
         });
 
     }
 
     update() {
         let my = this.my;    // create an alias to this.my for readability
-
-        console.log(my.sprite.car.anims.getFrameName());
 
         my.sprite.ground.x -= this.speed;
         my.sprite.bg2.x -= 2 * this.speed / 3
@@ -361,28 +364,35 @@ class Main extends Phaser.Scene {
         let my = this.my;
 
 
-        if (this.indexCount >= this.correctCount) {
-            console.log(this.correctCount);
-            if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
-                ++this.correctCount;
-                this.go = true;
-                my.sprite.car.play("drive", true);
-                this.txt.setCharacterTint(this.indexCount, 1, true, this.correctColor);
-                if (this.speed < 1.5) {
-                    this.speed += 0.5;
+        if (this.userEntry.length != 0) {
+            if (this.userEntry[this.indexCount] == ">" || this.charLineCount >= 35) {
+                if (this.errors.length == 0) {
+                    this.txt.y -= 32;
+                }
+                else {
+                    this.userEntry.pop();
+                    --this.indexCount;
                 }
             }
-            if (this.userEntry[this.indexCount] != this.originalTxtArr[this.indexCount]) {
-                this.txt.setCharacterTint(this.indexCount, 1, true, this.wrongColor);
+        }
+
+        if (this.userEntry[this.indexCount] == this.originalTxtArr[this.indexCount]) {
+            ++this.correctCount;
+            this.go = true;
+            my.sprite.car.play("drive", true);
+            this.txt.setCharacterTint(this.indexCount, 1, true, this.correctColor);
+            if (this.speed < 1.5) {
+                this.speed += 0.5;
             }
         }
-        else {
-            
+        if (this.userEntry[this.indexCount] != this.originalTxtArr[this.indexCount]) {
+            this.txt.setCharacterTint(this.indexCount, 1, true, this.wrongColor);
+            this.errors.push(this.indexCount);
         }
 
         console.log(this.userEntry);
+        console.log(this.errors);
 
-        
     }
 
 }
